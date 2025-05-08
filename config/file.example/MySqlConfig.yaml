@@ -1,5 +1,5 @@
-Addr: localhost
+Addr: 192.168.0.109
 Port: 3306
 DataBaseName: note
-UserName: root
-PassWord: 12345
+UserName: nfturbo
+PassWord: nfturbo

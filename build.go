@@ -22,6 +22,6 @@ func build(filepath string) {
 	}
 }
 
-func main() {
-	build(`main.go`)
-}
+// func main() {
+// 	build(`main.go`)
+// }
