@@ -9,12 +9,15 @@ import (
 	"note-gin/view/common"
 )
 
-// Add 添加新文章
-// 接收文章信息并创建新文章
+// Add 添加新文章，接收文章信息并创建新文章
 func Add(c *gin.Context) {
+	// 接收文章信息并创建新文章
 	articleEditView := ArticleView.ArticleEditView{}
+	// 绑定请求数据到结构体
 	err := c.ShouldBind(&articleEditView)
-	logging.Error(err.Error())
+	if err != nil {
+		logging.Error(err.Error())
+	}
 	ArticleService.Add(&articleEditView)
 	c.JSON(HttpCode.SUCCESS, common.OkWithData("文章创建成功！", articleEditView))
 }
