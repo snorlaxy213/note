@@ -113,8 +113,7 @@ func Update(articleEditView *ArticleView.ArticleEditView) {
 	articleEditView.ID = article.ID
 }
 
-// Edit 编辑文章
-// 获取文章的目录路径信息
+// Edit 编辑文章,获取文章的目录路径信息
 func Edit(articleEditView *ArticleView.ArticleEditView) {
 	//目录路径回溯
 	articleEditView.DirPath = append(articleEditView.DirPath, articleEditView.FolderID) //先添加自己的根目录

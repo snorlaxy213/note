@@ -12,8 +12,7 @@ import (
 	"strings"
 )
 
-// DeleteMany 批量删除文章
-// 接收文章ID数组并执行批量删除操作
+// DeleteMany 接收文章ID数组并执行批量删除操作
 func DeleteMany(c *gin.Context) {
 	ArticleService.DeleteMany(c.QueryArray("items[]"))
 	c.JSON(200, common.OkWithMsg("删除成功!"))
