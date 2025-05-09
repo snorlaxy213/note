@@ -23,7 +23,9 @@ func SetTag(c *gin.Context) {
 func Update(c *gin.Context) {
 	articleEditView := ArticleView.ArticleEditView{}
 	err := c.ShouldBind(&articleEditView)
-	logging.Error(err.Error())
+	if err != nil {
+		logging.Error(err.Error())
+	}
 	ArticleService.Update(&articleEditView)
 	c.JSON(HttpCode.SUCCESS, common.OkWithData("文章保存成功！", articleEditView))
 }
