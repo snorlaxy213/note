@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -9,7 +10,7 @@ type BaseModel struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	Deleted     bool
-	DeletedTime time.Time
+	DeletedTime sql.NullTime
 }
 
 //增
