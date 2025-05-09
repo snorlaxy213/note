@@ -12,11 +12,15 @@ import (
 	"strings"
 )
 
+// DeleteMany 批量删除文章
+// 接收文章ID数组并执行批量删除操作
 func DeleteMany(c *gin.Context) {
 	ArticleService.DeleteMany(c.QueryArray("items[]"))
 	c.JSON(200, common.OkWithMsg("删除成功!"))
 }
 
+// GetArticleByPage 分页获取文章列表
+// 根据页码返回对应页的文章列表
 func GetArticleByPage(c *gin.Context) {
 	page := utils.StrToInt(c.Param("page"))
 	articleInfos, total := ArticleService.GetArticleByPage(page)
@@ -26,18 +30,22 @@ func GetArticleByPage(c *gin.Context) {
 	})
 }
 
-//显示文章请求
+// GetArticleDetail 获取文章详情
+// 根据文章ID返回文章的详细内容
 func GetArticleDetail(c *gin.Context) {
 	articleDetail := ArticleService.GetArticleDetail(c.Param("id"))
 	c.JSON(HttpCode.SUCCESS, articleDetail)
 }
 
+// GetRubbishArticles 获取回收站中的文章
+// 返回已删除但未彻底清除的文章列表
 func GetRubbishArticles(c *gin.Context) {
 	respDataList := ArticleService.GetRubbishArticles()
 	c.JSON(HttpCode.SUCCESS, respDataList)
 }
 
-//垃圾箱恢复
+// ArticleRecover 恢复回收站中的文章
+// 将已删除的文章恢复到正常状态
 func ArticleRecover(c *gin.Context) {
 	err := ArticleService.ArticleRecover(c.Query("id"))
 	if err != nil {
@@ -47,7 +55,8 @@ func ArticleRecover(c *gin.Context) {
 	}
 }
 
-//编辑器临时草稿保存
+// TempArticleEditSave 保存文章编辑临时草稿
+// 将当前编辑状态的文章保存到临时存储中
 func TempArticleEditSave(c *gin.Context) {
 	articleEditView := ArticleView.ArticleEditView{}
 	err := c.ShouldBind(&articleEditView)
@@ -60,8 +69,9 @@ func TempArticleEditSave(c *gin.Context) {
 	}
 }
 
+// TempArticleEditGet 获取临时保存的文章草稿
+// 从临时存储中获取上次编辑的文章内容
 func TempArticleEditGet(c *gin.Context) {
-
 	if articleEditView, ok := ArticleService.TempArticleEditGet(); ok {
 		c.JSON(200, common.OkWithData("", articleEditView))
 	} else {
@@ -69,6 +79,8 @@ func TempArticleEditGet(c *gin.Context) {
 	}
 }
 
+// TempArticleEditDelete 删除临时保存的文章草稿
+// 清除临时存储中的文章编辑内容
 func TempArticleEditDelete(c *gin.Context) {
 	flag := ArticleService.TempArticleEditDelete()
 	if flag == 1 {
@@ -78,6 +90,8 @@ func TempArticleEditDelete(c *gin.Context) {
 	}
 }
 
+// ArticleDownLoad 下载文章
+// 将文章内容作为文件提供下载
 func ArticleDownLoad(c *gin.Context) {
 	filename, MkValue := ArticleService.ArticleDownLoad(c.Param("id"))
 	//文件命名
@@ -86,7 +100,8 @@ func ArticleDownLoad(c *gin.Context) {
 	io.Copy(c.Writer, strings.NewReader(MkValue))
 }
 
-//编辑按钮点击后请求到编辑器
+// Edit 获取文章编辑信息
+// 根据文章ID获取文章的编辑视图
 func Edit(c *gin.Context) {
 	articleEditView := ArticleView.ArticleEditView{}
 	err := c.ShouldBindUri(&articleEditView)

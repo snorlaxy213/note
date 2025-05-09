@@ -9,6 +9,8 @@ import (
 	"note-gin/view/common"
 )
 
+// Add 添加新文章
+// 接收文章信息并创建新文章
 func Add(c *gin.Context) {
 	articleEditView := ArticleView.ArticleEditView{}
 	err := c.ShouldBind(&articleEditView)
@@ -17,7 +19,8 @@ func Add(c *gin.Context) {
 	c.JSON(HttpCode.SUCCESS, common.OkWithData("文章创建成功！", articleEditView))
 }
 
-//上传md
+// UploadArticle 上传Markdown文件作为文章
+// 接收上传的Markdown文件并转换为文章
 func UploadArticle(c *gin.Context) {
 	c.Request.ParseMultipartForm(32 << 20)
 	folder_title := c.GetHeader("Folder-Title")

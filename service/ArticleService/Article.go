@@ -14,11 +14,15 @@ import (
 	"time"
 )
 
+// ArticleDownLoad 下载文章
+// 获取文章标题和内容用于下载
 func ArticleDownLoad(ID string) (string, string) {
 	article := GetArticleDetail(ID)
 	return article.Title, article.MkValue
 }
 
+// GetArticleByPage 分页获取文章
+// 根据页码获取对应页的文章列表和总数
 func GetArticleByPage(page int) ([]ArticleView.ArticleInfo, int) {
 	articles := models.Article{}.GetMany(page)
 	total := models.Article{}.Count()
@@ -26,6 +30,8 @@ func GetArticleByPage(page int) ([]ArticleView.ArticleInfo, int) {
 	return ArticleInfos, total
 }
 
+// GetArticleDetail 获取文章详情
+// 根据ID获取文章的详细信息
 func GetArticleDetail(ID string) ArticleView.ArticleDetail {
 	article := models.Article{}
 	article.ID = int64(utils.StrToInt(ID))
@@ -34,10 +40,14 @@ func GetArticleDetail(ID string) ArticleView.ArticleDetail {
 	return articleDetail
 }
 
+// ClearRubbish 清空回收站
+// 永久删除所有在回收站中的文章
 func ClearRubbish() {
 	models.Article{}.ClearRubbish()
 }
 
+// Delete 删除文章
+// 将文章移动到回收站
 func Delete(ID string) int64 {
 	article := models.Article{}
 	article.ID = int64(utils.StrToInt(ID))
@@ -45,10 +55,14 @@ func Delete(ID string) int64 {
 	return article.ID
 }
 
+// DeleteMany 批量删除文章
+// 将多篇文章移动到回收站
 func DeleteMany(IDs []string) {
 	models.Article{}.DeleteMany(IDs)
 }
 
+// GetRubbishArticles 获取回收站文章
+// 返回所有在回收站中的文章列表
 func GetRubbishArticles() common.DataList {
 	articles := models.Article{}.GetDeletedArticle()
 	respDataList := common.DataList{
@@ -58,12 +72,16 @@ func GetRubbishArticles() common.DataList {
 	return respDataList
 }
 
+// ArticleRecover 恢复文章
+// 将回收站中的文章恢复到正常状态
 func ArticleRecover(ID string) error {
 	article := models.Article{}
 	article.ID = int64(utils.StrToInt(ID))
 	return article.Recover()
 }
 
+// Add 添加文章
+// 创建新文章并设置相关属性
 func Add(articleEditView *ArticleView.ArticleEditView) {
 	article := models.Article{}
 	article.Title = articleEditView.Title
@@ -76,6 +94,8 @@ func Add(articleEditView *ArticleView.ArticleEditView) {
 	models.Folder{}.GetFolderPath(articleEditView.FolderID, &articleEditView.DirPath)   //查找路径
 }
 
+// Update 更新文章
+// 保存文章的修改内容
 func Update(articleEditView *ArticleView.ArticleEditView) {
 	article := models.Article{}
 	article.ID = articleEditView.ID
@@ -93,27 +113,37 @@ func Update(articleEditView *ArticleView.ArticleEditView) {
 	articleEditView.ID = article.ID
 }
 
+// Edit 编辑文章
+// 获取文章的目录路径信息
 func Edit(articleEditView *ArticleView.ArticleEditView) {
 	//目录路径回溯
 	articleEditView.DirPath = append(articleEditView.DirPath, articleEditView.FolderID) //先添加自己的根目录
 	FolderService.GetFolderPath(articleEditView.FolderID, &articleEditView.DirPath)     //查找路径
 }
 
+// SetTag 设置文章标签
+// 更新文章的标签信息
 func SetTag(articleInfo ArticleView.ArticleInfo) {
 	article := ArticleView.ToArticle(articleInfo)
 	article.SetTag()
 }
 
+// TempArticleEditGet 获取临时编辑内容
+// 从Redis中获取临时保存的文章编辑内容
 func TempArticleEditGet() (ArticleView.ArticleEditView, bool) {
 	articleEditView := ArticleView.ArticleEditView{}
 	ok := RedisClient.GetTempEdit(&articleEditView)
 	return articleEditView, ok
 }
 
+// TempArticleEditDelete 删除临时编辑内容
+// 从Redis中删除临时保存的文章编辑内容
 func TempArticleEditDelete() int64 {
 	return RedisClient.DeleteTempEdit()
 }
 
+// TempArticleEditSave 保存临时编辑内容
+// 将文章编辑内容临时保存到Redis中
 func TempArticleEditSave(articleEditView ArticleView.ArticleEditView) bool {
 	flag := RedisClient.SaveTempEdit(articleEditView)
 	if strings.ToLower(flag) == "ok" {
@@ -123,6 +153,8 @@ func TempArticleEditSave(articleEditView ArticleView.ArticleEditView) bool {
 	}
 }
 
+// UploadArticle 上传文章
+// 处理上传的Markdown文件并创建或更新文章
 func UploadArticle(files map[string][]*multipart.FileHeader, folder_title string, file_name *string) (bool, error) {
 	folder_id := FolderService.GetFolderByTitle(folder_title).ID
 	for name, file := range files {

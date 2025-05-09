@@ -9,7 +9,8 @@ import (
 	"note-gin/view/common"
 )
 
-//设置blog
+// SetTag 设置文章标签
+// 接收文章信息并更新标签
 func SetTag(c *gin.Context) {
 	articleInfo := ArticleView.ArticleInfo{}
 	_ = c.ShouldBind(&articleInfo)
@@ -17,6 +18,8 @@ func SetTag(c *gin.Context) {
 	return
 }
 
+// Update 更新文章
+// 接收编辑后的文章信息并保存
 func Update(c *gin.Context) {
 	articleEditView := ArticleView.ArticleEditView{}
 	err := c.ShouldBind(&articleEditView)
