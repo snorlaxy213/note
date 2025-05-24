@@ -1,7 +1,9 @@
 package models
 
 import (
+	"database/sql"
 	"errors"
+	"time"
 )
 
 type Article struct {
@@ -56,7 +58,7 @@ func (this *Article) SetTag() {
 
 // 回收到垃圾箱
 func (this *Article) Delete() {
-	db.Model(&this).Update("deleted", true)
+	db.Model(&this).Update("deleted", true).Update("deleted_time", sql.NullTime{Time: time.Now(), Valid: true})
 }
 
 // 真实批量删除【后台】
@@ -76,7 +78,7 @@ func (this Article) Recover() error {
 	db.Table("folder").Where("id=?", this.FolderID).Count(&hasFolder)
 
 	if hasFolder != 0 || this.FolderID == 0 {
-		db.Table("article").Where("id=?", this.ID).Update("deleted", 0)
+		db.Table("article").Where("id=?", this.ID).Update("deleted", 0).Update("deleted_time", nil)
 		return nil
 	} else {
 		return errors.New("父目录不存在！恢复失败")
