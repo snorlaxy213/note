@@ -31,13 +31,13 @@ func GetCurrentNav(c *gin.Context) {
 // @Success 200 {object} common.FileList "成功响应，包含文件列表、文件夹列表、导航和总数"
 // @Router /folder/subfile/{page} [get]
 func GetSubFile(c *gin.Context) {
-	page := c.Param("page")                 // 从路径参数中获取页码
-	folder_title := c.Query("title")        // 从查询参数中获取文件夹标题
+	page := c.Param("page")         // 从路径参数中获取页码
+	folderTitle := c.Query("title") // 从查询参数中获取文件夹标题
 	// 调用服务层获取子文件、子文件夹和总数
-	folderInfos, articleInfos, total := FolderService.GetSubFile(folder_title, utils.StrToInt(page))
+	folderInfos, articleInfos, total := FolderService.GetSubFile(folderTitle, utils.StrToInt(page))
 	//导航
-	nav := FolderService.ChangeNav(page, folder_title) // 获取并更新导航信息
-	resp := common.FileList{                           // 构建响应体
+	nav := FolderService.ChangeNav(page, folderTitle) // 获取并更新导航信息
+	resp := common.FileList{ // 构建响应体
 		Folders:  folderInfos,
 		Articles: articleInfos,
 		Nav:      nav,

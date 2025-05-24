@@ -86,7 +86,7 @@ func (this Folder) GetSubFolderOnPage(page, PageSize int) (fds []Folder) {
 // limit: 需要获取的文章数量
 // offset: 查询结果的偏移量
 func (this Folder) GetSubArticle(limit, offset int) (articles []Article) {
-	db.Limit(limit).Offset(offset).Where("deleted=?", 0).Select([]string{"id", "title", "updated_at"}).Find(&articles, "folder_id=?", this.ID)
+	db.Limit(limit).Offset(offset).Where("deleted=?", 0).Select([]string{"id", "title", "updated_at", "tags"}).Find(&articles, "folder_id=?", this.ID)
 	return
 }
 
