@@ -6,11 +6,11 @@ import (
 )
 
 type BaseModel struct {
-	ID          int64 `gorm:"primary_key"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	Deleted     bool
-	DeletedTime sql.NullTime
+	ID          int64        `gorm:"primary_key" form:"title" json:"title"`
+	CreatedAt   time.Time    `form:"created_at" json:"created_at"`
+	UpdatedAt   time.Time    `form:"updated_at" json:"updated_at"`
+	Deleted     bool         `form:"deleted" json:"deleted"`
+	DeletedTime sql.NullTime `form:"deleted_time" json:"deleted_time"`
 }
 
 // 增

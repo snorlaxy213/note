@@ -65,8 +65,9 @@ func DeleteMany(IDs []string) {
 // 返回所有在回收站中的文章列表
 func GetRubbishArticles() common.DataList {
 	articles := models.Article{}.GetDeletedArticle()
+	articleInfos := ArticleView.ToRubbishArticleInfos(articles) // 将回收文章模型列表转换为视图模型列表
 	respDataList := common.DataList{
-		Items: articles,
+		Items: articleInfos,
 		Total: int64(len(articles)),
 	}
 	return respDataList
