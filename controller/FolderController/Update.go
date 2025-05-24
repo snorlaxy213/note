@@ -10,9 +10,9 @@ import (
 )
 
 func Update(c *gin.Context) {
-	folderInfo:=FolderView.FolderInfo{}
+	folderInfo := FolderView.FolderInfo{}
 	err := c.ShouldBind(&folderInfo)
-	if err!=nil{
+	if err != nil {
 		logging.Error(err.Error())
 	}
 	FolderService.Update(folderInfo)

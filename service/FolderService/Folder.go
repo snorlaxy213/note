@@ -28,10 +28,10 @@ func GetFolderByTitle(folder_title string) FolderView.FolderInfo {
 // folder_title: 父文件夹的标题
 // page: 请求的页码
 // 返回值: folderInfos (子文件夹信息列表), articleInfos (子文章信息列表), total (子文件和子文件夹总数)
-func GetSubFile(folder_title string, page int) ([]FolderView.FolderInfo, []ArticleView.ArticleInfo, int) {
+func GetSubFile(folderTitle string, page int) ([]FolderView.FolderInfo, []ArticleView.ArticleInfo, int) {
 	folder := models.Folder{}
 
-	folder.Title = folder_title
+	folder.Title = folderTitle
 	folder.GetFolderByTitle() // 根据标题获取文件夹的详细信息 (主要是ID)
 
 	// 根据页码查找这个目录下的全部文件和文件夹，并获取总数
@@ -63,15 +63,15 @@ func ChangeNav(page string, folder_title string) []string {
 func GetSubFolders(id string) []FolderView.FolderSelectView {
 	folder := models.Folder{}
 	folder.ID = int64(utils.StrToInt(id)) // 将字符串ID转换为 int64
-	folders := folder.GetSubFolders()      // 获取所有子文件夹
+	folders := folder.GetSubFolders()     // 获取所有子文件夹
 
 	// 创建指定长度的切片，可以直接通过索引赋值
 	folderSelectList := make([]FolderView.FolderSelectView, len(folders))
 	for i := range folders {
 		folderSelectList[i] = FolderView.FolderSelectView{
-			Value: folders[i].ID,                             // 文件夹ID作为值
-			Label: folders[i].Title,                          // 文件夹标题作为标签
-			Leaf:  folders[i].CountSubFolder() <= 0,          // 如果没有子文件夹，则标记为叶子节点
+			Value: folders[i].ID,                    // 文件夹ID作为值
+			Label: folders[i].Title,                 // 文件夹标题作为标签
+			Leaf:  folders[i].CountSubFolder() <= 0, // 如果没有子文件夹，则标记为叶子节点
 		}
 	}
 	return folderSelectList
@@ -96,13 +96,13 @@ func Add(title string, fatherTitle string) {
 	father.GetFolderByTitle() // 根据父文件夹标题获取其ID
 
 	folder.FolderID = father.ID // 设置新文件夹的父ID
-	
-	// 显式设置时间字段为当前时间
-    now := time.Now()
-    folder.CreatedAt = now
-    folder.UpdatedAt = now
 
-	folder.Add()                // 调用数据模型的添加方法
+	// 显式设置时间字段为当前时间
+	now := time.Now()
+	folder.CreatedAt = now
+	folder.UpdatedAt = now
+
+	folder.Add() // 调用数据模型的添加方法
 }
 
 // Delete 删除指定ID的文件夹及其内容 (逻辑删除)

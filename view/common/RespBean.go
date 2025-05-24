@@ -1,15 +1,16 @@
 package common
 
 type RespBean struct {
-	Code int `form:"code" json:"code"`
-	Msg  string `form:"msg" json:"msg"`
+	Code int         `form:"code" json:"code"`
+	Msg  string      `form:"msg" json:"msg"`
 	Data interface{} `form:"data" json:"data"`
 }
-func NewRespBean() RespBean{
+
+func NewRespBean() RespBean {
 	return RespBean{}
 }
 
-func OkWithMsg(msg string) RespBean  {
+func OkWithMsg(msg string) RespBean {
 	return RespBean{
 		Code: 200,
 		Msg:  msg,
@@ -17,7 +18,7 @@ func OkWithMsg(msg string) RespBean  {
 	}
 }
 
-func OkWithData(msg string,data interface{}) RespBean{
+func OkWithData(msg string, data interface{}) RespBean {
 	return RespBean{
 		Code: 200,
 		Msg:  msg,
@@ -25,9 +26,7 @@ func OkWithData(msg string,data interface{}) RespBean{
 	}
 }
 
-
-
-func ErrorWithMsg(msg string) RespBean  {
+func ErrorWithMsg(msg string) RespBean {
 	return RespBean{
 		Code: 500,
 		Msg:  msg,
@@ -35,12 +34,10 @@ func ErrorWithMsg(msg string) RespBean  {
 	}
 }
 
-func ErrorWithData(msg string,data interface{}) RespBean{
+func ErrorWithData(msg string, data interface{}) RespBean {
 	return RespBean{
 		Code: 500,
 		Msg:  msg,
 		Data: data,
 	}
 }
-
-

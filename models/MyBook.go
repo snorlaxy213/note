@@ -9,11 +9,11 @@ const (
 )
 
 type MyBook struct {
-	ID     int64  `form:"id" json:"id"`
-	Title  string `form:"title" json:"title"`
-	Writer string `form:"writer" json:"writer"`
-	ImgURL string `form:"img_url" json:"img_url"` //封面图片
-	Status string `form:"status" json:"status"`
+	ID        int64     `form:"id" json:"id"`
+	Title     string    `form:"title" json:"title"`
+	Writer    string    `form:"writer" json:"writer"`
+	ImgURL    string    `form:"img_url" json:"img_url"` //封面图片
+	Status    string    `form:"status" json:"status"`
 	UpdatedAt time.Time `form:"updated_at" json:"updated_at"`
 }
 

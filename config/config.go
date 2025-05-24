@@ -9,7 +9,7 @@ import (
 
 var Conf Config
 
-//启动  go run main.go -c config/file/BootLoader.yaml
+// 启动  go run main.go -c config/file/BootLoader.yaml
 func SetUp() {
 	var ConfigPath string
 	flag.StringVar(&ConfigPath, "c", "", "配置文件路径")
@@ -18,7 +18,7 @@ func SetUp() {
 	Conf = NewConfig(ConfigPath)
 }
 
-//总配置对象
+// 总配置对象
 type Config struct {
 	//存放各个配置文件的路径 Path
 	Cfp configFilePath
@@ -30,8 +30,8 @@ type Config struct {
 	AppConfig    App
 }
 
-//根据命令行输入的BootLoader.yaml路径  创建Config  同时根据BootLoader.yaml配置的其他文件路径初始化其他模块配置
-//Config像一个抓手 找到其他文件路径并初始化配置
+// 根据命令行输入的BootLoader.yaml路径  创建Config  同时根据BootLoader.yaml配置的其他文件路径初始化其他模块配置
+// Config像一个抓手 找到其他文件路径并初始化配置
 func NewConfig(path string) Config {
 	var config Config
 	config.Cfp = NewconfigFilePath(path)
@@ -44,7 +44,7 @@ func NewConfig(path string) Config {
 	return config
 }
 
-//该struct保存了各个模块的配置文件路径
+// 该struct保存了各个模块的配置文件路径
 type configFilePath struct {
 	ServerPath string `yaml:"ServerPath"`
 	MySqlPath  string `yaml:"MySqlPath"`
@@ -52,7 +52,7 @@ type configFilePath struct {
 	AppPath    string `yaml:"AppPath"`
 }
 
-//创建 configFilePath
+// 创建 configFilePath
 func NewconfigFilePath(path string) configFilePath {
 	Cfp := configFilePath{}
 	file, _ := ioutil.ReadFile(path)

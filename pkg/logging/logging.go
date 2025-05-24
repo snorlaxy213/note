@@ -17,7 +17,6 @@ var (
 	levelFlags    = []string{"TRACE", "INFO", "WARN", "ERROR", "FATAL"}
 )
 
-
 type Level int
 
 const (

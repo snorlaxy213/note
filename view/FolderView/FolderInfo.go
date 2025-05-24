@@ -11,12 +11,11 @@ type FolderInfo struct {
 	UpdatedAt string `form:"updated_at" json:"updated_at"`
 }
 
-
 func ToFolder(folderInfo FolderInfo) models.Folder {
-	folder:=models.Folder{}
-	folder.ID  = folderInfo.ID
+	folder := models.Folder{}
+	folder.ID = folderInfo.ID
 	folder.Title = folderInfo.Title
-	folder.UpdatedAt,_ = time.Parse("2006-01-02", folderInfo.UpdatedAt)
+	folder.UpdatedAt, _ = time.Parse("2006-01-02", folderInfo.UpdatedAt)
 	return folder
 }
 

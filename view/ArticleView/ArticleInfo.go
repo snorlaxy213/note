@@ -9,10 +9,10 @@ import (
 // ArticleInfo 文章信息视图
 // 用于列表展示的文章简要信息
 type ArticleInfo struct {
-	ID        int64    `json:"id" form:"id"`             // 文章ID
-	Title     string   `json:"title" form:"title"`       // 文章标题
+	ID        int64    `json:"id" form:"id"`                 // 文章ID
+	Title     string   `json:"title" form:"title"`           // 文章标题
 	UpdatedAt string   `json:"updated_at" form:"updated_at"` // 更新时间
-	Tags      []string `json:"tags" form:"tags"`       // 文章标签列表
+	Tags      []string `json:"tags" form:"tags"`             // 文章标签列表
 }
 
 // ToArticleInfos 将文章模型数组转换为文章信息视图数组

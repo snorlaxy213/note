@@ -13,7 +13,7 @@ type BaseModel struct {
 	DeletedTime sql.NullTime
 }
 
-//增
+// 增
 func AddOne(obj interface{}) {
 
 }
@@ -21,7 +21,7 @@ func AddMany(obj []interface{}) {
 
 }
 
-//删
+// 删
 func DeleteOne(obj interface{}) {
 
 }
@@ -29,7 +29,7 @@ func DeleteMany(attr map[string]string) {
 
 }
 
-//查
+// 查
 func FindOne(obj interface{}) {
 
 }
@@ -37,7 +37,7 @@ func FindByPage(obj interface{}, page int) {
 
 }
 
-//改
+// 改
 func Update(attr map[string]string) {
 
 }

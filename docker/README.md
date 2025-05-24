@@ -2,7 +2,8 @@
 
 ### 1、使用七牛图片存储
 
-注意，要使用七牛图片存储的话需要在 `config/AppConfig.yaml` 加上下面两个字段 `QiniuAccessKey`  `QiniuSecretKey` ，当然为了不泄露自己的密钥，我这里就取消这两个配置，**不影响运行**
+注意，要使用七牛图片存储的话需要在 `config/AppConfig.yaml` 加上下面两个字段 `QiniuAccessKey`  `QiniuSecretKey`
+，当然为了不泄露自己的密钥，我这里就取消这两个配置，**不影响运行**
 
 ```yaml
 PageSize: 13

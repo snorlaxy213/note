@@ -60,9 +60,9 @@ func (this Folder) GetSubFile(page int) (fds []Folder, articles []Article, total
 		// 计算剩余空间应填充的文章数量
 		articles = this.GetSubArticle(PageSize-fdsCount, 0) // 获取文章以填补页面剩余空间，从第一页的文章开始取
 	} else if fdsCount == 0 { // 如果当前页没有子文件夹 (可能意味着所有子文件夹已显示完毕，或者此页开始显示文章)
-		SubFolderCount := this.CountSubFolder()                                 // 子文件夹总数
-		offset := PageSize - (SubFolderCount % PageSize)                        // 计算文章开始的偏移量，确保文章列表接在文件夹列表之后
-		page = page - ((SubFolderCount / PageSize) + 1)                         // 调整页码以正确获取文章分页
+		SubFolderCount := this.CountSubFolder()                           // 子文件夹总数
+		offset := PageSize - (SubFolderCount % PageSize)                  // 计算文章开始的偏移量，确保文章列表接在文件夹列表之后
+		page = page - ((SubFolderCount / PageSize) + 1)                   // 调整页码以正确获取文章分页
 		articles = this.GetSubArticle(PageSize, offset+(page-1)*PageSize) // 获取对应页码的文章
 	}
 	return
@@ -78,7 +78,7 @@ func (this Folder) GetSubFolders() (folders []Folder) {
 // page: 请求的页码
 // PageSize: 每页的项目数量
 func (this Folder) GetSubFolderOnPage(page, PageSize int) (fds []Folder) {
-	db.Limit(PageSize).Offset((page - 1) * PageSize).Find(&fds, "folder_id=?", this.ID)
+	db.Limit(PageSize).Offset((page-1)*PageSize).Find(&fds, "folder_id=?", this.ID)
 	return
 }
 

@@ -27,7 +27,7 @@ func SetUp() {
 
 	if gin.Mode() == gin.ReleaseMode {
 		DB.LogMode(false)
-	}else if gin.Mode()==gin.DebugMode {
+	} else if gin.Mode() == gin.DebugMode {
 		DB.LogMode(true)
 	}
 

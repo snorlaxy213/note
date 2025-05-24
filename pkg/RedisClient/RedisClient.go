@@ -5,7 +5,7 @@ import (
 	"note-gin/config"
 )
 
-//单例
+// 单例
 var RedisClient *redis.Client
 var redisConfig = config.Conf.RedisConfig
 

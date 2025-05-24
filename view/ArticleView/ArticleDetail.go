@@ -5,8 +5,8 @@ import "note-gin/models"
 // ArticleDetail 文章详情视图
 // 包含文章的基本信息和Markdown内容
 type ArticleDetail struct {
-	ID      int64  `form:"id" json:"id"`       // 文章ID
-	Title   string `form:"title" json:"title"` // 文章标题
+	ID      int64  `form:"id" json:"id"`           // 文章ID
+	Title   string `form:"title" json:"title"`     // 文章标题
 	MkValue string `form:"mkValue" json:"mkValue"` // Markdown格式的文章内容
 }
 

@@ -11,6 +11,4 @@ func BookRouter(base string) {
 	r.POST("/book/add", BookController.AddBook)
 	r.POST("/book/update", BookController.UpdateBook)
 
-
-
 }

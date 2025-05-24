@@ -37,7 +37,7 @@ func GetSubFile(c *gin.Context) {
 	folderInfos, articleInfos, total := FolderService.GetSubFile(folderTitle, utils.StrToInt(page))
 	//导航
 	nav := FolderService.ChangeNav(page, folderTitle) // 获取并更新导航信息
-	resp := common.FileList{ // 构建响应体
+	resp := common.FileList{                          // 构建响应体
 		Folders:  folderInfos,
 		Articles: articleInfos,
 		Nav:      nav,

@@ -12,7 +12,7 @@ type Article struct {
 	Tags     string
 }
 
-//Find
+// Find
 func (this Article) Count() (total int) {
 	db.Table("article").Where("deleted=?", 0).Count(&total)
 	return total
@@ -37,12 +37,12 @@ func (this Article) GetDeletedArticle() (articles []Article) {
 	return
 }
 
-//Create
+// Create
 func (this *Article) Add() {
 	db.Create(this)
 }
 
-//Update Or Create
+// Update Or Create
 func (this *Article) Update() {
 	if this.ID != 0 {
 		db.Save(&this)
@@ -54,22 +54,22 @@ func (this *Article) SetTag() {
 	db.Model(&this).Update("tags", this.Tags)
 }
 
-//回收到垃圾箱
+// 回收到垃圾箱
 func (this *Article) Delete() {
 	db.Model(&this).Update("deleted", true)
 }
 
-//真实批量删除【后台】
+// 真实批量删除【后台】
 func (this Article) DeleteMany(ids []string) {
 	db.Table("article").Where("id in (?)", ids).Delete(&this)
 }
 
-//清空垃圾箱
+// 清空垃圾箱
 func (this Article) ClearRubbish() {
 	db.Where("deleted <> 0").Delete(&Article{})
 }
 
-//垃圾箱恢复
+// 垃圾箱恢复
 func (this Article) Recover() error {
 	hasFolder := 0
 	db.First(&this)

@@ -8,7 +8,7 @@ import (
 
 type App struct {
 	PageSize       int    `yaml:"PageSize"`
-	MakeMigration      bool   `yaml:"MakeMigration"` //是否进行数据库迁移
+	MakeMigration  bool   `yaml:"MakeMigration"` //是否进行数据库迁移
 	QiniuAccessKey string `yaml:"QiniuAccessKey"`
 	QiniuSecretKey string `yaml:"QiniuSecretKey"`
 	LogFilePath    string `yaml:"LogFilePath"`
@@ -18,7 +18,7 @@ func (app *App) DefaultAppConfig() {
 	app.PageSize = 13
 	app.QiniuAccessKey = ""
 	app.QiniuSecretKey = ""
-	app.MakeMigration=false
+	app.MakeMigration = false
 	app.LogFilePath = "panic.log"
 }
 
@@ -28,7 +28,7 @@ func (app *App) InitAppConfig(path string) {
 	if err := yaml.Unmarshal(file, app); err != nil {
 		log.Println("ERROR", err)
 	}
-	if app.PageSize<=0{
-		app.PageSize=13
+	if app.PageSize <= 0 {
+		app.PageSize = 13
 	}
 }

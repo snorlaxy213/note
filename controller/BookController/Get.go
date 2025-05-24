@@ -6,7 +6,7 @@ import (
 	"note-gin/view/common"
 )
 
-//Book
+// Book
 func GetAllBook(c *gin.Context) {
 	books := models.MyBook{}.GetAll()
 	c.JSON(200, common.DataList{

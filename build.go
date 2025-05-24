@@ -8,7 +8,7 @@ import (
 
 //***将文件编译为Linux文件可执行
 
-//filepath: 要编译的文件的路径
+// filepath: 要编译的文件的路径
 func build(filepath string) {
 	_ = os.Setenv("CGO_ENABLED", "0")
 	_ = os.Setenv("GOARCH", "amd64")
