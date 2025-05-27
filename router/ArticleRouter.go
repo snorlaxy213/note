@@ -19,8 +19,8 @@ func ArticleRouter(base string) {
 	r.GET("/temp_delete", ArticleController.TempArticleEditDelete) // 删除临时编辑内容
 	r.POST("/temp_save", ArticleController.TempArticleEditSave)    // 保存临时编辑内容
 	r.POST("/add", ArticleController.Add)                          // 添加文章
+	r.GET("/edit/:id", ArticleController.EditArticleDetail)        // 获取编辑文章详情
 	r.POST("/update", ArticleController.Update)                    // 更新文章
-	r.GET("/edit/:id", ArticleController.Edit)                     // 编辑文章
 	r.POST("/set_tag", ArticleController.SetTag)                   // 设置文章标签
 	r.POST("/upload_md", ArticleController.UploadArticle)          // 上传Markdown文件
 

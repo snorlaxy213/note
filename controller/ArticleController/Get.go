@@ -99,9 +99,9 @@ func ArticleDownLoad(c *gin.Context) {
 	io.Copy(c.Writer, strings.NewReader(MkValue))
 }
 
-// Edit 获取文章编辑信息
+// EditArticleDetail 获取文章编辑信息
 // 根据文章ID获取文章的编辑视图
-func Edit(c *gin.Context) {
+func EditArticleDetail(c *gin.Context) {
 	articleEditView := ArticleView.ArticleEditView{}
 	articleEditView.ID = int64(utils.StrToInt(c.Param("id")))
 	ArticleService.Edit(&articleEditView)
