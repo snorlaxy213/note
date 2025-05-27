@@ -102,8 +102,6 @@ func ArticleDownLoad(c *gin.Context) {
 // EditArticleDetail 获取文章编辑信息
 // 根据文章ID获取文章的编辑视图
 func EditArticleDetail(c *gin.Context) {
-	articleEditView := ArticleView.ArticleEditView{}
-	articleEditView.ID = int64(utils.StrToInt(c.Param("id")))
-	ArticleService.Edit(&articleEditView)
-	c.JSON(HttpCode.SUCCESS, common.OkWithData("", articleEditView))
+	editArticleDetail := ArticleService.GetEditArticleDetail(c.Param("id"))
+	c.JSON(HttpCode.SUCCESS, common.OkWithData("获取文章编辑信息成功", editArticleDetail))
 }

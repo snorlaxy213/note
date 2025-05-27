@@ -40,6 +40,16 @@ func GetArticleDetail(ID string) ArticleView.ArticleDetail {
 	return articleDetail
 }
 
+// GetEditArticleDetail 获取文章详情(编辑)
+// 根据ID获取文章的详细信息
+func GetEditArticleDetail(ID string) ArticleView.ArticleEditView {
+	article := models.Article{}
+	article.ID = int64(utils.StrToInt(ID))
+	article.GetArticleInfo()
+	editArticleDetail := ArticleView.ToEditArticleDetail(article)
+	return editArticleDetail
+}
+
 // ClearRubbish 清空回收站
 // 永久删除所有在回收站中的文章
 func ClearRubbish() {
