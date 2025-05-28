@@ -23,7 +23,7 @@ func ToArticleInfos(articles []models.Article) []ArticleInfo {
 	for index := range articles {
 		ArticleInfos[index].ID = articles[index].ID
 		ArticleInfos[index].Title = articles[index].Title
-		ArticleInfos[index].UpdatedAt = articles[index].UpdatedAt.Format("2006-1-2")
+		ArticleInfos[index].UpdatedAt = articles[index].UpdatedAt.Format("2006-01-02")
 		ArticleInfos[index].Tags = strings.Split(articles[index].Tags, ",")
 	}
 	return ArticleInfos

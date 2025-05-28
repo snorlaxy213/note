@@ -28,10 +28,11 @@ func GetFolderByTitle(folder_title string) FolderView.FolderInfo {
 // folder_title: 父文件夹的标题
 // page: 请求的页码
 // 返回值: folderInfos (子文件夹信息列表), articleInfos (子文章信息列表), total (子文件和子文件夹总数)
-func GetSubFile(folderTitle string, page int) ([]FolderView.FolderInfo, []ArticleView.ArticleInfo, int) {
+func GetSubFile(folderId string, folderTitle string, page int) ([]FolderView.FolderInfo, []ArticleView.ArticleInfo, int) {
 	folder := models.Folder{}
 
 	folder.Title = folderTitle
+	folder.FolderID = int64(utils.StrToInt(folderId))
 	folder.GetFolderByTitle() // 根据标题获取文件夹的详细信息 (主要是ID)
 
 	// 根据页码查找这个目录下的全部文件和文件夹，并获取总数
