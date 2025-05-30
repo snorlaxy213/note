@@ -49,8 +49,8 @@ func (this Folder) GetFolderByID() {
 // page: 请求的页码
 // 返回值: fds (子文件夹列表), articles (子文章列表), total (子文件和子文件夹总数)
 func (this Folder) GetSubFile(page int) (fds []Folder, articles []Article, total int) {
-	if PageSize <= 0 { // 如果全局 PageSize 未正确配置或为0，则设置默认值为13
-		PageSize = 13
+	if PageSize <= 0 { // 如果全局 PageSize 未正确配置或为0，则设置默认值为10
+		PageSize = 10
 	}
 	fds = this.GetSubFolderOnPage(page, PageSize) // 获取当前页的子文件夹
 	total = this.CountSubFile()                   // 获取子文件和子文件夹的总数
