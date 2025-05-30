@@ -11,6 +11,7 @@ func ArticleRouter(base string) {
 	r.GET("/many/:page", ArticleController.GetArticleByPage)       // 分页获取文章
 	r.GET("/get/:id", ArticleController.GetArticleDetail)          // 获取文章详情
 	r.GET("/clear_rubbish", ArticleController.ClearRubbish)        // 清空回收站
+	r.GET("/clear_rubbish/:id", ArticleController.PermanentDelete) // 永久删除回收站中的单篇文章
 	r.GET("/delete", ArticleController.Delete)                     // 删除文章
 	r.GET("/delete/many", ArticleController.DeleteMany)            // 批量删除文章
 	r.GET("/rubbish", ArticleController.GetRubbishArticles)        // 获取回收站文章

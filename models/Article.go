@@ -71,6 +71,11 @@ func (this Article) ClearRubbish() {
 	db.Where("deleted <> 0").Delete(&Article{})
 }
 
+// PermanentDeleteOne 永久删除回收站中的单篇文章
+func (this *Article) PermanentDeleteOne() {
+	db.Where("id = ? AND deleted = ?", this.ID, 1).Delete(&this)
+}
+
 // 垃圾箱恢复
 func (this Article) Recover() error {
 	hasFolder := 0

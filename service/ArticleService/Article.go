@@ -198,3 +198,12 @@ func UploadArticle(files map[string][]*multipart.FileHeader, folder_title string
 	}
 	return false, nil
 }
+
+// PermanentDelete 永久删除单篇文章
+// 根据ID永久删除回收站中的指定文章
+func PermanentDelete(id string) int64 {
+	article := models.Article{}
+	article.ID = int64(utils.StrToInt(id))
+	article.PermanentDeleteOne()
+	return article.ID
+}

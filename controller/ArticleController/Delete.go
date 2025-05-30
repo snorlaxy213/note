@@ -20,3 +20,10 @@ func ClearRubbish(c *gin.Context) {
 	ArticleService.ClearRubbish()
 	c.JSON(HttpCode.SUCCESS, common.OkWithMsg("清空成功！"))
 }
+
+// PermanentDelete 永久删除回收站中的单篇文章
+// 根据ID永久删除回收站中的指定文章
+func PermanentDelete(c *gin.Context) {
+	ID := ArticleService.PermanentDelete(c.Param("id"))
+	c.JSON(HttpCode.SUCCESS, common.OkWithData("文章已永久删除！", ID))
+}
