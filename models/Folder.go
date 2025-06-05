@@ -96,8 +96,8 @@ func (this Folder) GetFolderInfo() {
 }
 
 // GetFolderByTitle 根据文件夹的标题获取文件夹信息，并更新接收者 this
-func (this Folder) GetFolderByTitle() {
-	db.Where("title=?", this.Title).First(&this)
+func (this *Folder) GetFolderByTitle() {
+	db.Where("title=?", this.Title).First(this)
 }
 
 // CountSubFile 计算当前文件夹下子文件和子文件夹的总数
