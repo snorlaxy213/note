@@ -15,7 +15,7 @@ type App struct {
 }
 
 func (app *App) DefaultAppConfig() {
-	app.PageSize = 13
+	app.PageSize = 10
 	app.QiniuAccessKey = ""
 	app.QiniuSecretKey = ""
 	app.MakeMigration = false
@@ -29,6 +29,6 @@ func (app *App) InitAppConfig(path string) {
 		log.Println("ERROR", err)
 	}
 	if app.PageSize <= 0 {
-		app.PageSize = 13
+		app.PageSize = 10
 	}
 }

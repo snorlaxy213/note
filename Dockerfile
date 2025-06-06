@@ -49,8 +49,9 @@ WORKDIR /app
 COPY --from=builder /app/note-gin .
 COPY --from=builder /app/config/file.example ./config/file
 
-# 创建数据目录并设置权限
-RUN mkdir -p /app/data && \
+# 创建必要的目录并设置权限
+RUN mkdir -p /app/data /app/logs /app/pkg/logging && \
+    touch /app/pkg/logging/log.log && \
     chown -R appuser:appgroup /app
 
 # 切换到非root用户

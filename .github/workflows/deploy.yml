@@ -119,6 +119,7 @@ jobs:
               -e SERVER_MODE=release \
               -v /note-gin/staging/config:/app/config/file \
               -v /note-gin/staging/data:/app/data \
+              -v /note-gin/staging/logs:/app/logs \
               --health-cmd="wget --no-verbose --tries=1 --spider http://localhost:9000/health || exit 1" \
               --health-interval=30s \
               --health-timeout=3s \
