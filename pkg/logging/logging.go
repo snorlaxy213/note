@@ -3,9 +3,7 @@ package logging
 import (
 	"fmt"
 	"log"
-	"note-gin/config"
 	"os"
-	"path/filepath"
 	"runtime"
 )
 
@@ -28,21 +26,8 @@ const (
 )
 
 func SetUp() {
-	filePath := config.Conf.AppConfig.LogFilePath
-	
-	// 确保日志目录存在
-	logDir := filepath.Dir(filePath)
-	if err := os.MkdirAll(logDir, 0755); err != nil {
-		log.Printf("创建日志目录失败: %v", err)
-	}
-	
-	// 使用OpenFile创建或打开文件，支持写入和追加
-	var err error
-	F, err = os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("logging.Setup err: %v", err)
-	}
-	logger = log.New(F, DefaultPrefix, log.LstdFlags|log.Lshortfile)
+	// 直接使用标准输出，不需要文件
+	logger = log.New(os.Stdout, DefaultPrefix, log.LstdFlags|log.Lshortfile)
 }
 
 func Trace(v ...interface{}) {
