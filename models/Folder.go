@@ -70,7 +70,12 @@ func (this Folder) GetSubFile(page int) (fds []Folder, articles []Article, total
 
 // GetSubFolders 获取当前文件夹下的所有子文件夹
 func (this Folder) GetSubFolders() (folders []Folder) {
-	db.Table("folder").Where("folder_id=?", this.ID).Find(&folders)
+	//如果ID为0，则为根目录，返回所有未删除的目录
+	if this.ID == 0 {
+		db.Where("deleted=?", 0).Find(&folders)
+	} else {
+		db.Table("folder").Where("folder_id=? and deleted=?", this.ID, 0).Find(&folders)
+	}
 	return
 }
 
