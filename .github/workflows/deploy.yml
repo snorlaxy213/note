@@ -109,7 +109,7 @@ jobs:
             docker rm note-gin-staging || true
             
             # 拉取最新镜像
-            docker pull docker.1ms.run/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:master-${{ github.sha }}
+            docker pull docker.1ms.run/${{ env.IMAGE_NAME }}:master-${{ github.sha }}
             
             # 启动新容器
             docker run -d \
