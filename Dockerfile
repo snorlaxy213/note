@@ -10,21 +10,21 @@ RUN apk --no-cache add tzdata ca-certificates git
 # 设置工作目录
 WORKDIR /app
 
-# 设置Go代理
+# 设置Go代理和环境变量
 ENV GOPROXY=https://goproxy.cn,direct
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
 
-# 复制go mod文件并下载依赖
-COPY go.mod go.sum ./
+# 首先复制go.mod和go.sum文件
+COPY go.mod .
+COPY go.sum .
+
+# 下载依赖
 RUN go mod download
 
 # 复制源代码
 COPY . .
-
-# 创建配置目录
-RUN mkdir -p /app/config/file
 
 # 构建应用
 RUN go build -ldflags "-s -w" -o note-gin .
@@ -33,7 +33,7 @@ RUN go build -ldflags "-s -w" -o note-gin .
 FROM alpine:latest
 
 # 安装必要的运行时依赖
-RUN apk --no-cache add ca-certificates tzdata
+RUN apk --no-cache add ca-certificates tzdata wget
 
 # 设置时区
 ENV TZ=Asia/Shanghai
@@ -45,11 +45,11 @@ RUN addgroup -g 1001 -S appgroup && \
 # 设置工作目录
 WORKDIR /app
 
-# 从构建阶段复制二进制文件
+# 从构建阶段复制二进制文件和配置
 COPY --from=builder /app/note-gin .
 COPY --from=builder /app/config/file.example ./config/file
 
-# 创建数据目录
+# 创建数据目录并设置权限
 RUN mkdir -p /app/data && \
     chown -R appuser:appgroup /app
 
@@ -61,7 +61,7 @@ EXPOSE 9000
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:9000/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:9000/ || exit 1
 
 # 启动应用
 CMD ["./note-gin", "-c", "config/file/BootLoader.yaml"]
