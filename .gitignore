@@ -1,7 +1,6 @@
 build.go
 /.idea
 /.gitignore
-go.sum
 file
 # Visual Studio Code settings
 .vscode/
