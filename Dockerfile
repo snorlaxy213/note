@@ -12,7 +12,6 @@ RUN go mod download && \
 
 # 使用一个新的阶段创建一个最小的镜像。
 FROM alpine:3.20
-COPY ./conf /conf
 COPY --from=builder /app/note /note
 # 更新文件权限以确保它是可执行的。
 RUN chmod +x /note
