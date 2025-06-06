@@ -1,22 +1,3 @@
-# This workflow will build and push a new container image to Alibaba Cloud Container Registry (ACR),
-# and then will deploy it to Alibaba Cloud Container Service for Kubernetes (ACK), when there is a push to the "master" branch.
-#
-# To use this workflow, you will need to complete the following set-up steps:
-#
-# 1. Create an ACR repository to store your container images.
-#    You can use ACR EE instance for more security and better performance.
-#    For instructions see https://www.alibabacloud.com/help/doc-detail/142168.htm
-#
-# 2. Create an ACK cluster to run your containerized application.
-#    You can use ACK Pro cluster for more security and better performance.
-#    For instructions see https://www.alibabacloud.com/help/doc-detail/95108.htm
-#
-# 3. Store your AccessKey pair in GitHub Actions secrets named `ACCESS_KEY_ID` and `ACCESS_KEY_SECRET`.
-#    For instructions on setting up secrets see: https://developer.github.com/actions/managing-workflows/storing-secrets/
-#
-# 4. Change the values for the REGION_ID, REGISTRY, NAMESPACE, IMAGE, ACK_CLUSTER_ID, and ACK_DEPLOYMENT_NAME.
-#
-
 name: Deploy to Cloud Server
 
 on:
@@ -30,57 +11,38 @@ on:
         default: 'Manual deployment triggered'
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.21'
+      - name: Build Docker image	#打包镜像
+        run: |
+          docker build -t vino2snax/note:${{ github.sha }} .
+          docker tag vino2snax/note:${{ github.sha }} vino2snax/note:latest
 
-    - name: Build
-      run: go build -v ./...
+      - name: Login to Docker Hub	#登录Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    - name: Test
-      run: go test -v ./...
+      - name: Push Docker image to Docker Hub	#推送到Docker Hub
+        run: |
+          docker push vino2snax/note:latest
+          docker push vino2snax/note:${{ github.sha }}
 
-    - name: Login to Aliyun Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: <your-registry-url>
-        username: ${{ secrets.ALIYUN_CR_USERNAME }}
-        password: ${{ secrets.ALIYUN_CR_PASSWORD }}
-    
-    - name: Generate config file
-      run: |
-        envsubst < configs/config.yaml.template > configs/config.yaml
-      env:
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-    
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: <your-registry-url>/<your-project-name>/note:${{ github.sha }},<your-registry-url>/<your-project-name>/note:latest
-
-    - name: Deploy to Aliyun Server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.ALIYUN_HOST }}
-        username: ${{ secrets.ALIYUN_USERNAME }}
-        key: ${{ secrets.ALIYUN_SERVER_SSH_KEY }}
-        script: |
-          docker login --username=${{ secrets.ALIYUN_CR_USERNAME }} --password=${{ secrets.ALIYUN_CR_PASSWORD }} <your-registry-url>
-          docker pull <your-registry-url>/<your-project-name>/note:latest
-          docker stop note || true
-          docker rm note || true
-          docker run -d --network my-network --name note -p 9003:9003 --restart always <your-registry-url>/<your-project-name>/note:latest
-
+      - name: Deploy to server	#部署到服务器
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: root
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+          script: |
+            docker pull vino2snax/note:${{ github.sha }}
+            docker stop note || true  
+            docker rm note || true   
+            docker run -d --name note -p 9003:9003 vino2snax/note:${{ github.sha }}
