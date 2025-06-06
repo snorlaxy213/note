@@ -19,7 +19,7 @@ func (app *App) DefaultAppConfig() {
 	app.QiniuAccessKey = ""
 	app.QiniuSecretKey = ""
 	app.MakeMigration = false
-	app.LogFilePath = "panic.log"
+	app.LogFilePath = "/app/logs/app.log"
 }
 
 func (app *App) InitAppConfig(path string) {
