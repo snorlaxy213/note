@@ -15,7 +15,7 @@ func init() {
 	models.SetUp()
 	RedisClient.SetUp()
 	// QiniuClient.SetUp()
-	// logging.SetUp()  // 注释掉日志初始化
+	// logging.SetUp()
 }
 
 func main() {
