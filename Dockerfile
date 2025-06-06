@@ -1,22 +1,67 @@
-# 使用官方的 Golang 镜像创建构建产物。
-FROM golang:1.21.6 AS builder
+# 构建阶段
+FROM golang:1.21-alpine AS builder
 
-RUN mkdir /app
-# 将本地代码复制到容器镜像中。
+# 设置国内镜像源加速
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+
+# 安装必要的包
+RUN apk --no-cache add tzdata ca-certificates git
+
+# 设置工作目录
 WORKDIR /app
+
+# 设置Go代理
+ENV GOPROXY=https://goproxy.cn,direct
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
+
+# 复制go mod文件并下载依赖
+COPY go.mod go.sum ./
+RUN go mod download
+
+# 复制源代码
 COPY . .
 
-# 在容器内构建命令。
-RUN go mod download && \
-    CGO_ENABLED=0 GOOS=linux go build -o note .
+# 创建配置目录
+RUN mkdir -p /app/config/file
 
-# 使用一个新的阶段创建一个最小的镜像。
-FROM alpine:3.20
-COPY --from=builder /app/note /note
-# 更新文件权限以确保它是可执行的。
-RUN chmod +x /note
-# 设置容器的默认端口
-EXPOSE 9003
+# 构建应用
+RUN go build -ldflags "-s -w" -o note-gin .
 
-# 设置容器的默认命令。
-CMD ["/note"]
+# 运行阶段
+FROM alpine:latest
+
+# 安装必要的运行时依赖
+RUN apk --no-cache add ca-certificates tzdata
+
+# 设置时区
+ENV TZ=Asia/Shanghai
+
+# 创建非root用户
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+
+# 设置工作目录
+WORKDIR /app
+
+# 从构建阶段复制二进制文件
+COPY --from=builder /app/note-gin .
+COPY --from=builder /app/config/file.example ./config/file
+
+# 创建数据目录
+RUN mkdir -p /app/data && \
+    chown -R appuser:appgroup /app
+
+# 切换到非root用户
+USER appuser
+
+# 暴露端口
+EXPOSE 9000
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:9000/health || exit 1
+
+# 启动应用
+CMD ["./note-gin", "-c", "config/file/BootLoader.yaml"]
