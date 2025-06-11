@@ -12,7 +12,7 @@ var Conf Config
 // 启动  go run main.go -c config/file/BootLoader.yaml
 func SetUp() {
 	var ConfigPath string
-	flag.StringVar(&ConfigPath, "c", "", "配置文件路径")
+	flag.StringVar(&ConfigPath, "c", "config/file.example/BootLoader.yaml", "配置文件路径")
 	flag.Parse()
 	//log.Println(ConfigPath)
 	Conf = NewConfig(ConfigPath)

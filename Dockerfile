@@ -50,4 +50,4 @@ COPY --from=builder /app/note-gin .
 COPY --from=builder /app/config/file.example ./config/file
 
 # 启动应用
-CMD ["./note-gin", "-c", "config/file/BootLoader.yaml"]
+CMD ["./note-gin"]
