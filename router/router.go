@@ -14,8 +14,16 @@ func NewRouter() *gin.Engine {
 
 	r.GET("/ping", func(context *gin.Context) {
 		context.Writer.WriteString("Pong")
-
 	})
+	
+	// 添加健康检查端点
+	r.GET("/health", func(context *gin.Context) {
+		context.JSON(200, gin.H{
+			"status": "ok",
+			"message": "service is healthy",
+		})
+	})
+	
 	r.NoRoute(func(context *gin.Context) {
 		context.Writer.WriteString("对不起，页面找不到")
 	})
