@@ -49,20 +49,5 @@ WORKDIR /app
 COPY --from=builder /app/note-gin .
 COPY --from=builder /app/config/file.example ./config/file
 
-# 创建必要的目录并设置权限
-RUN mkdir -p /app/data /app/logs /app/pkg/logging && \
-    touch /app/pkg/logging/log.log && \
-    chown -R appuser:appgroup /app
-
-# 切换到非root用户
-USER appuser
-
-# 暴露端口
-EXPOSE 9000
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:9000/ || exit 1
-
 # 启动应用
 CMD ["./note-gin", "-c", "config/file/BootLoader.yaml"]
