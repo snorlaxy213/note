@@ -1,6 +1,7 @@
 package router
 
 import (
+	"time"
 	"github.com/gin-gonic/gin"
 	"note-gin/middleware"
 )
@@ -12,15 +13,17 @@ func NewRouter() *gin.Engine {
 
 	r.Use(middleware.Cors()) //配置跨域
 
-	r.GET("/ping", func(context *gin.Context) {
-		context.Writer.WriteString("Pong")
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
 	})
-	
-	// 添加健康检查端点
-	r.GET("/health", func(context *gin.Context) {
-		context.JSON(200, gin.H{
-			"status": "ok",
-			"message": "service is healthy",
+
+	// Health check endpoint for Docker
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "healthy",
+			"timestamp": time.Now().Unix(),
 		})
 	})
 	

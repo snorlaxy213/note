@@ -13,7 +13,7 @@ type Server struct {
 }
 
 func (server *Server) DefaultServerConfig() {
-	server.Host = "localhost"
+	server.Host = "0.0.0.0"
 	server.Port = "9000"
 	server.RunMode = "release"
 }

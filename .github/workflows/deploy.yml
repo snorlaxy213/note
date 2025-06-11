@@ -2,10 +2,10 @@ name: Build and Deploy Note-Gin
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches: [ "master" ]
     tags: [ "v*" ]
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "master" ]
   workflow_dispatch:
     inputs:
       deployMessage:
@@ -15,11 +15,10 @@ on:
       environment:
         description: 'Target environment'
         required: true
-        default: 'production'
+        default: 'testing'
         type: choice
         options:
-        - production
-        - staging
+        - testing
 
 env:
   REGISTRY: docker.io
@@ -89,14 +88,14 @@ jobs:
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
 
-  deploy-staging:
+  deploy-testing:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    environment: staging
+    environment: testing
     
     steps:
-      - name: Deploy to staging server
+      - name: Deploy to testing server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -105,21 +104,21 @@ jobs:
           port: 22
           script: |
             # 停止并删除旧容器
-            docker stop note-gin-staging || true
-            docker rm note-gin-staging || true
+            docker stop note-gin-testing || true
+            docker rm note-gin-testing || true
             
             # 拉取最新镜像
             docker pull docker.1ms.run/${{ env.IMAGE_NAME }}:master
             
             # 启动新容器
             docker run -d \
-              --name note-gin-staging \
+              --name note-gin-testing \
               --restart unless-stopped \
               -p 9000:9000 \
               -e SERVER_MODE=release \
-              -v /note-gin/staging/config:/app/config/file \
-              -v /note-gin/staging/data:/app/data \
-              -v /note-gin/staging/logs:/app/logs \
+              -v /note-gin/testing/config:/app/config/file \
+              -v /note-gin/testing/data:/app/data \
+              -v /note-gin/testing/logs:/app/logs \
               --health-cmd="wget --no-verbose --tries=1 --spider http://localhost:9000/health || exit 1" \
               --health-interval=30s \
               --health-timeout=3s \
