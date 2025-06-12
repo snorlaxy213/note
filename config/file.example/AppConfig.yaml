@@ -1,5 +1,5 @@
-PageSize: 13
+PageSize: 10
 MakeMigration: false
-QiniuAccessKey: Wdlsdsada-dadsasdsadagacdadssa4T
-QiniuSecretKey: HdadadsadsadsadsasdadsA
+QiniuAccessKey:
+QiniuSecretKey:
 LogFilePath: /app/logs/app.log

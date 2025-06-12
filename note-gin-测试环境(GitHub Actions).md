@@ -25,8 +25,6 @@ test:
     - 设置 Go 环境 (版本 1.21)
 ````
 
-
-
 **构建阶段 (build)**
 
 ````yaml
@@ -56,15 +54,18 @@ deploy-testing:
 
 部署阶段的核心思路：
 
-1. **零停机部署**：先停止旧容器，再启动新容器
+1. **环境隔离**：使用卷挂载实现配置和数据的隔离
 
-2. **环境隔离**：使用卷挂载实现配置和数据的隔离
-
-3. **资源清理**：自动清理旧镜像，避免磁盘空间浪费
+2. **资源清理**：自动清理旧镜像，避免磁盘空间浪费
 
 #### 1.3 环境变量与密钥管理
 
 - 使用 GitHub Secrets 存储敏感信息（Docker Hub 凭证、服务器信息）
+  根据deploy.yml需要配置如下信息
+  1. DOCKER_HUB_ACCESS_TOKEN：docker-hub创建的密码
+  2. DOCKER_HUB_USERNAME：docker-hub创建的用户名
+  3. SERVER_HOST：服务器的地址
+  4. SERVER_PASSWORD：服务器的密码
 - 使用环境变量定义镜像名称和仓库地址   
 
 ----
@@ -114,7 +115,7 @@ FROM alpine:latest
 #### 3.1 配置文件结构
 测试环境使用以下配置文件结构：
 
-在linux虚拟机上创建文件夹（/note-gin/testing/config/），把config/file.example下的配置文件复制过去
+**在linux虚拟机上创建文件夹（/note-gin/testing/config/），把config/file.example下的配置文件复制过去**
 
 ````yaml
 /note-gin/testing/config/
@@ -125,7 +126,7 @@ FROM alpine:latest
 └── ServerConfig.yaml
 ````
 
-此外BootLoader.yaml需要更改为对应的路径（与代码上的有所不同），例如我的环境：
+**此外BootLoader.yaml需要更改为对应的路径（与代码上的有所不同）**，例如我的环境：
 
 ````yaml
 AppPath: /app/config/file/AppConfig.yaml
@@ -138,7 +139,7 @@ app:工作目录
 
 config/file：挂载自动创建的
 
-Tips：例如MySqlConfig.yaml上的配置也可根据环境更改
+**Tips：例如MySqlConfig.yaml上的配置也可根据环境更改**
 
 #### 3.2 卷挂载策略
 
@@ -152,7 +153,6 @@ Tips：例如MySqlConfig.yaml上的配置也可根据环境更改
 
 1. 配置隔离：测试环境使用独立的配置文件
 2. 数据持久化：数据和日志存储在宿主机上，容器重建不会丢失
-3. 环境变量注入：通过 -e SERVER_MODE=release 设置运行模式
 
 ----
 

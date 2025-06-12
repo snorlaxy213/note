@@ -1,4 +1,4 @@
-Addr: 192.168.0.109
-Port: 6379
-DataBaseNumber: 1
+Addr:
+Port:
+DataBaseNumber:
 PassWord: 
