@@ -16,7 +16,7 @@ func TestConfigPath(t *testing.T) {
 }
 
 func TestIoutil(t *testing.T) {
-	b, e := ioutil.ReadFile("../config/file/BootLoader.yaml")
+	b, e := ioutil.ReadFile("../config/file.example/BootLoader.yaml")
 	t.Log(string(b), e)
 }
 
