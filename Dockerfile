@@ -27,6 +27,7 @@ RUN go mod download
 COPY . .
 
 # 构建应用
+# -ldflags "-s -w" 压缩编译后的二进制文件 -s：去掉符号表和调试信息，减少二进制大小。 -w：不生成 DWARF 调试信息，进一步减小体积。
 RUN go build -ldflags "-s -w" -o note-gin .
 
 # 启动应用

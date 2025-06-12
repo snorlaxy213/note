@@ -122,10 +122,6 @@ jobs:
               -v /note-gin/testing/config:/app/config/file \
               -v /note-gin/testing/data:/app/data \
               -v /note-gin/testing/logs:/app/logs \
-              --health-cmd="wget --no-verbose --tries=1 --spider http://localhost:9000/health || exit 1" \
-              --health-interval=30s \
-              --health-timeout=3s \
-              --health-retries=3 \
               docker.1ms.run/${{ env.IMAGE_NAME }}:master
             
             # 清理旧镜像

@@ -1,7 +1,6 @@
 package router
 
 import (
-	"time"
 	"github.com/gin-gonic/gin"
 	"note-gin/middleware"
 )
@@ -19,14 +18,6 @@ func NewRouter() *gin.Engine {
 		})
 	})
 
-	// Health check endpoint for Docker
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"status": "healthy",
-			"timestamp": time.Now().Unix(),
-		})
-	})
-	
 	r.NoRoute(func(context *gin.Context) {
 		context.Writer.WriteString("对不起，页面找不到")
 	})
