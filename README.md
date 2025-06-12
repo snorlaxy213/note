@@ -33,7 +33,7 @@ Note-Gin 是一个基于 Gin 框架开发的在线笔记系统，提供文章、
 - 容器化：Docker
 - CI/CD：GitHub Actions
 ## 项目结构
-````tex
+````yaml
 ├── config/             # 配置相关
 ├── controller/         # 控制器
 ├── docker/             # Docker配置
