@@ -14,9 +14,9 @@ type Redis struct {
 }
 
 func (redis *Redis) DefaultRedisConfig() {
-	redis.Addr = "localhost"
-	redis.Port = "6379"
-	redis.DataBaseNumber = 0
+	redis.Addr = ""
+	redis.Port = ""
+	redis.DataBaseNumber = 1
 	redis.PassWord = ""
 }
 

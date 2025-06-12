@@ -15,11 +15,11 @@ type MySql struct {
 }
 
 func (mysql *MySql) DefaultmySqlConfig() {
-	mysql.Addr = "115.190.87.24"
-	mysql.Port = "3306"
-	mysql.DataBaseName = "note"
-	mysql.UserName = "nfturbo"
-	mysql.PassWord = "nfturbo"
+	mysql.Addr = ""
+	mysql.Port = ""
+	mysql.DataBaseName = ""
+	mysql.UserName = ""
+	mysql.PassWord = ""
 }
 
 func (mysql *MySql) InitmySqlConfig(path string) {

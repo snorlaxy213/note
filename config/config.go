@@ -14,7 +14,6 @@ func SetUp() {
 	var ConfigPath string
 	flag.StringVar(&ConfigPath, "c", "config/file.example/BootLoader.yaml", "配置文件路径")
 	flag.Parse()
-	//log.Println(ConfigPath)
 	Conf = NewConfig(ConfigPath)
 }
 

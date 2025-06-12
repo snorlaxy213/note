@@ -107,6 +107,9 @@ jobs:
             docker stop note-gin-testing || true
             docker rm note-gin-testing || true
             
+            # 删除旧镜像
+            docker rmi docker.1ms.run/${{ env.IMAGE_NAME }}:master || true
+            
             # 拉取最新镜像
             docker pull docker.1ms.run/${{ env.IMAGE_NAME }}:master
             

@@ -29,25 +29,5 @@ COPY . .
 # 构建应用
 RUN go build -ldflags "-s -w" -o note-gin .
 
-# 运行阶段
-FROM alpine:latest
-
-# 安装必要的运行时依赖
-RUN apk --no-cache add ca-certificates tzdata wget
-
-# 设置时区
-ENV TZ=Asia/Shanghai
-
-# 创建非root用户
-RUN addgroup -g 1001 -S appgroup && \
-    adduser -u 1001 -S appuser -G appgroup
-
-# 设置工作目录
-WORKDIR /app
-
-# 从构建阶段复制二进制文件和配置
-COPY --from=builder /app/note-gin .
-COPY --from=builder /app/config/file.example ./config/file
-
 # 启动应用
-CMD ["./note-gin"]
+CMD ["./note-gin", "-c", "/app/config/file/BootLoader.yaml"]
